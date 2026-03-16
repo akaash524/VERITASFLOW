@@ -1,0 +1,175 @@
+###register
+POST http://localhost:4040/veritasflow/signup/
+Content-Type: application/json
+
+{
+    "firstName":"Siddu",
+    "lastName":"Koppurapu",
+    "email":"sid@gmail.com",
+    "password":"akaash1234",
+    "role":"COMPLIANCE_OFFICER",
+    "isActive":true
+}
+
+
+
+###chaneg password
+POST http://localhost:4040/veritasflow/change-password
+Content-Type: application/json
+
+{
+    "email":"sam@gmail.com",
+    "currentPassword":"akaash1234",
+    "newPassword":"sam1234"
+}
+
+
+
+
+
+### user login 
+POST http://localhost:4040/veritasflow/login
+Content-Type: application/json
+
+{
+    "email":"sam@gmail.com",
+    "password":"akaash1234"
+}
+
+
+
+### manager login 
+POST http://localhost:4040/veritasflow/login
+Content-Type: application/json
+
+{
+    "email":"sampath@gmail.com",
+    "password":"akaash1234"
+}
+
+
+
+
+### senior manager login 
+POST http://localhost:4040/veritasflow/login
+Content-Type: application/json
+
+{
+    "email":"harsha@gmail.com",
+    "password":"akaash1234"
+}
+
+
+
+### co login 
+POST http://localhost:4040/veritasflow/login
+Content-Type: application/json
+
+{
+    "email":"sid@gmail.com",
+    "password":"akaash1234"
+}
+
+
+
+###log out
+GET http://localhost:4040/veritasflow/logout
+
+
+
+###get all rules
+GET http://localhost:4040/veritasflow/co/rules
+
+
+
+###add new rule
+POST http://localhost:4040/veritasflow/co/rules
+Content-Type: application/json
+
+{
+    "name":"HIGH_VALUE_TRANSFER",
+    "condition":{ 
+        "field": "amount",
+        "operator": "GT",
+        "value": 100000 
+        },
+    "score":40,
+    "reason":"Transaction exceeds ₹1,00,000 threshold",
+    "isActive":true
+}
+
+
+
+###create a new transaction
+POST http://localhost:4040/veritasflow/user-api/transaction/create
+Content-Type: application/json
+
+{
+    "receiverId": "69ac54df9f3d5549081fbfc2",
+    "amount": 150000,
+    "operationType": "TRANSFER"
+}
+
+
+
+
+###manager routes
+###get all pending transactions
+GET http://localhost:4040/veritasflow/manager-api/transactions/pending
+
+
+
+
+
+###approve the transaction
+POST http://localhost:4040/veritasflow/manager-api/transactions/69aefc5b917627a4c480d8e7/action
+Content-Type: application/json
+
+{
+    "action":"Approved",
+    "comments":"This is regular user"
+}
+
+
+
+###senior-manager routes
+###get all pending transactions
+GET http://localhost:4040/veritasflow/senior-manager-api/transactions/pending
+
+
+
+
+
+###approve the transaction
+POST http://localhost:4040/veritasflow/senior-manager-api/transactions/69aefc5b917627a4c480d8e7/action
+Content-Type: application/json
+
+{
+    "action":"Approved",
+    "comments":"This is okay this time"
+}
+
+
+
+
+
+###co-manager routes
+###get all pending transactions
+GET http://localhost:4040/veritasflow/co-api/transactions/pending
+
+
+
+
+
+###approve the transaction
+POST http://localhost:4040/veritasflow/co-api/transactions/69aefc5b917627a4c480d8e7/action
+Content-Type: application/json
+
+{
+    "action":"Approved",
+    "comments":"i am boss"
+}
+
+
+
+
