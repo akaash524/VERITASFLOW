@@ -4,12 +4,18 @@ import { authorizeRoles } from '../MIDDLEWARES/authorizeRoles.js'
 import { evaluateRisk } from '../SERVICES/riskEngine.js'
 import { TransactionModel } from '../MODELS/transactionModel.js'
 import { initiateWorkflow } from '../SERVICES/workFlowEngine.js'
+import { UserModel } from '../MODELS/userModel.js'
 export const userApp=exp.Router()
 
 
 userApp.post('/transaction/create',verifyToken,authorizeRoles("USER"),async (req,res)=>{
     let transaction=req.body
     let { score, level, reasons }=await evaluateRisk(transaction)
+    let reciver=await UserModel.findOne({email:transaction.reciverId})
+    if(!reciver){
+        return res.status(404).json({message:'User not found'})
+    }
+    transaction.reciverId=reciver._id
     transaction.senderId = req.user._id
     transaction.riskScore=score
     transaction.riskLevel=level
