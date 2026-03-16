@@ -88,7 +88,7 @@ export default function NewTransaction() {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-[12px] font-semibold text-gray-700">Receiver Email</label>
-            <input type="text" value={form.receiverId} onChange={e => setForm({ ...form, receiverId: e.target.value })}
+            <input type="email" value={form.receiverId} onChange={e => setForm({ ...form, receiverId: e.target.value })}
               placeholder="receiver@company.com"
               className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-[13px] font-mono text-gray-900 placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100 transition-all" />
           </div>

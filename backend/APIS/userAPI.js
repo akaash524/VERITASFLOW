@@ -11,7 +11,7 @@ export const userApp=exp.Router()
 userApp.post('/transaction/create',verifyToken,authorizeRoles("USER"),async (req,res)=>{
     let transaction=req.body
     let { score, level, reasons }=await evaluateRisk(transaction)
-    let reciver=await UserModel.findOne({email:transaction.reciverId})
+    let reciver=await UserModel.findOne({email:transaction.receiverId})
     if(!reciver){
         return res.status(404).json({message:'User not found'})
     }
