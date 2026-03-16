@@ -28,8 +28,8 @@ commonRouter.post('/login',async (req,res)=>{
     //save as htttp cookie only 
     res.cookie("token",token,{
         httpOnly:true,
-        sameSite:"lax",
-        secure:false,
+        sameSite:"none",
+        secure:true,
     })
     //send response
     res.status(200).json({ message:"Login Success", payload:user })
