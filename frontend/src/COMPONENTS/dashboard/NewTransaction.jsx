@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import ErrorMessage from "../shared/ErrorMessage";
@@ -10,6 +10,35 @@ export default function NewTransaction() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
+  const [users, setUsers] = useState([])
+  const [filteredUsers, setFilteredUsers] = useState([])
+  const [showDropdown, setShowDropdown] = useState(false)
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await API.get("/user-api/users")
+        setUsers(res.data.payload || [])
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    fetchUsers()
+  }, [])
+  const handleReceiverChange = (e) => {
+    const value = e.target.value
+    setForm({ ...form, receiverId: value })
+    if (value.length > 0) {
+      const matches = users.filter(u =>
+        u.email.toLowerCase().includes(value.toLowerCase()) ||
+        u.firstName.toLowerCase().includes(value.toLowerCase())
+      )
+      setFilteredUsers(matches)
+      setShowDropdown(true)
+    } else {
+      setShowDropdown(false)
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,9 +117,52 @@ export default function NewTransaction() {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-[12px] font-semibold text-gray-700">Receiver Email</label>
-            <input type="email" value={form.receiverId} onChange={e => setForm({ ...form, receiverId: e.target.value })}
-              placeholder="receiver@company.com"
-              className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-[13px] font-mono text-gray-900 placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100 transition-all" />
+            <div className="relative">
+              <input
+                type="text"
+                value={form.receiverId}
+                onChange={handleReceiverChange}
+                onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+                placeholder="Search by name or email..."
+                className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-[13px] text-gray-900 placeholder-gray-400 outline-none focus:border-[#1a56db] focus:ring-2 focus:ring-blue-100 transition-all"
+              />
+
+              {/* Dropdown */}
+              {showDropdown && filteredUsers.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-gray-200 shadow-lg z-50 overflow-hidden">
+                  {filteredUsers.map(user => (
+                    <button
+                      key={user._id}
+                      type="button"
+                      onClick={() => {
+                        setForm({ ...form, receiverId: user.email })
+                        setShowDropdown(false)
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 transition-colors text-left"
+                    >
+                      <div className="w-7 h-7 rounded-lg bg-[#1a56db] flex items-center justify-center flex-shrink-0">
+                        <span className="text-[10px] font-bold text-white">
+                          {`${user.firstName?.[0]}${user.lastName?.[0]}`.toUpperCase()}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-[12px] font-semibold text-gray-800">
+                          {user.firstName} {user.lastName}
+                        </p>
+                        <p className="text-[11px] text-gray-400">{user.email}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* No results */}
+              {showDropdown && filteredUsers.length === 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-gray-200 shadow-lg z-50 px-3 py-3">
+                  <p className="text-[12px] text-gray-400">No users found.</p>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex flex-col gap-1.5">

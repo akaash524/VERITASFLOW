@@ -32,7 +32,7 @@ POST http://localhost:4040/veritasflow/login
 Content-Type: application/json
 
 {
-    "email":"sam@gmail.com",
+    "email":"akaash@gmail.com",
     "password":"akaash1234"
 }
 
@@ -105,7 +105,7 @@ POST http://localhost:4040/veritasflow/user-api/transaction/create
 Content-Type: application/json
 
 {
-    "receiverId": "69ac54df9f3d5549081fbfc2",
+    "receiverId": "sampath@gmail.com",
     "amount": 150000,
     "operationType": "TRANSFER"
 }

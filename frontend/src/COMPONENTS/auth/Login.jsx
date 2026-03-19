@@ -292,8 +292,11 @@ export default function Login() {
           </form>
 
           {/* Footer note */}
-          <p className="text-center text-[11px] text-gray-400 mt-8">
-            Access is role-restricted. Contact your administrator<br />if you need an account.
+          <p className="text-center text-[11px] text-gray-400 mt-4">
+            Don't have an account?{" "}
+            <button onClick={() => navigate("/signup")} className="text-primary font-semibold hover:underline">
+              Create one
+            </button>
           </p>
 
           {/* Security badges */}

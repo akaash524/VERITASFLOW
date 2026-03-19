@@ -7,11 +7,14 @@ import { initiateWorkflow } from '../SERVICES/workFlowEngine.js'
 import { UserModel } from '../MODELS/userModel.js'
 export const userApp=exp.Router()
 
-
+//create a new transaction
 userApp.post('/transaction/create',verifyToken,authorizeRoles("USER"),async (req,res)=>{
     let transaction=req.body
+    if(transaction.receiverId===req.email){
+        return res.status(400).json({ message: 'You cannot send a transaction to yourself' })
+    }
     let { score, level, reasons }=await evaluateRisk(transaction)
-    let receiver=await UserModel.findOne({email:transaction.receiverId})
+    let receiver=await UserModel.findOne({email:transaction.receiverId,role:'USER'})
     if(!receiver){
         return res.status(404).json({message:'User not found'})
     }
@@ -52,4 +55,10 @@ userApp.get('/transactions/:id/audit', verifyToken, async(req,res,next) => {
     } catch(err) {
         next(err)
     }
+})
+
+//get all the users.
+userApp.get('/users',verifyToken,async(req,res)=>{
+    let users=await UserModel.find({role:'USER'})
+    res.status(200).json({message:'all users',payload:users})
 })

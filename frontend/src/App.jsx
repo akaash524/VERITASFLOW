@@ -9,6 +9,7 @@ import ComplianceDashboard from './COMPONENTS/compliance/ComplianceDashboard'
 import NewTransaction from './COMPONENTS/dashboard/NewTransaction'
 import Transactions from './COMPONENTS/dashboard/Transactions'
 import ChangePassword from './COMPONENTS/auth/ChangePassword'
+import Signup from './COMPONENTS/auth/Signup'
 
 export default function App() {
   return (
@@ -16,6 +17,8 @@ export default function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
 
+      <Route path="/signup" element={<Signup />} />
+      
       <Route path="/dashboard" element={
         <ProtectedRoute allowedRoles={["USER"]}>
           <Layout><Dashboard /></Layout>

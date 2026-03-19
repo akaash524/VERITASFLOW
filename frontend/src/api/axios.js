@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const API = axios.create({
-    baseURL: "https://veritasflow-1.onrender.com/veritasflow",
+    baseURL: "http://localhost:4040/veritasflow",
+    // baseURL: "https://veritasflow-1.onrender.com/veritasflow",
     withCredentials: true,  // sends cookies automatically
 })
 API.interceptors.response.use(
